@@ -1,4 +1,4 @@
-import 'package:doctor_triage_app/screens/appointment_list_screen.dart';
+import 'package:doctor_triage_app/screens/list_screens.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.grey[50],
       ),
-      home: AppointmentListScreen(),
+      home: MainListScreensWithBottomNavBar(),
       // For testing, you can switch between these screens:
       // home: AppointmentDetailScreen(
       //   appointment: Appointment(

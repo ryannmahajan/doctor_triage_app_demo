@@ -1,14 +1,33 @@
 import 'package:doctor_triage_app/models/appointment.dart';
 import 'package:doctor_triage_app/screens/appointment_detail_screen.dart';
+import 'package:doctor_triage_app/screens/list_screens.dart';
 import 'package:doctor_triage_app/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class AppointmentListScreen extends StatefulWidget {
+class AppointmentListScreen extends ListScreenBase {
   const AppointmentListScreen({super.key});
 
   @override
   _AppointmentListScreenState createState() => _AppointmentListScreenState();
+  
+  @override
+  FloatingActionButton? floatingActionButton(BuildContext context) => 
+    FloatingActionButton(
+          onPressed:() => _navigateToAddAppointment(context),
+          tooltip: 'Add New Appointment',
+          child: Icon(Icons.add),
+    );
+  
+  @override
+  String get title => "Concerns";
+
+  void _navigateToAddAppointment(BuildContext c) {
+    // Navigate to add triage screen
+    ScaffoldMessenger.of(c).showSnackBar(
+      SnackBar(content: Text('Add new appt. - To be implemented')),
+    );
+  }
 }
 
 class _AppointmentListScreenState extends State<AppointmentListScreen> {
@@ -83,20 +102,9 @@ class _AppointmentListScreenState extends State<AppointmentListScreen> {
     }
   }
 
-  void _navigateToAddTriage() {
-    // Navigate to add triage screen
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Add new triage - To be implemented')),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Appointments'),
-      ),
-      body: Column(
+    return Column(
         children: [
           _buildDateFilter(),
           Expanded(
@@ -112,35 +120,7 @@ class _AppointmentListScreenState extends State<AppointmentListScreen> {
                       ),
           ),
         ],
-      ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _navigateToAddTriage,
-      //   tooltip: 'Add New Triage',
-      //   child: Icon(Icons.add),
-      // ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: 1,
-        destinations: [
-          NavigationDestination(
-            selectedIcon: Icon(Icons.medical_services),
-            icon: Icon(Icons.medical_services_outlined),
-            label: 'Concerns',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.calendar_today),
-            icon: Icon(Icons.calendar_today_outlined),
-            label: 'Appointments',
-          ),
-        ],
-        onDestinationSelected: (index) {
-          if (index == 0) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Appointments - To be implemented')),
-            );
-          }
-        },
-      ),
-    );
+      );
   }
 
   Widget _buildDateFilter() {
