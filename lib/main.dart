@@ -13,8 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Doctor Triage App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.grey[50],
+        colorSchemeSeed: Colors.blue,
+        brightness: Brightness.light
       ),
       home: MainListScreensWithBottomNavBar(),
       // For testing, you can switch between these screens:
