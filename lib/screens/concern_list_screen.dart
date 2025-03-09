@@ -2,8 +2,8 @@
 import 'package:doctor_triage_app/screens/list_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/patient.dart';
-import 'triage_detail_screen.dart';
+import '../models/concern.dart';
+import 'concern_detail_screen.dart';
 
 class ConcernListScreen extends ListScreenBase {
   const ConcernListScreen({super.key});
@@ -23,16 +23,16 @@ class ConcernListScreen extends ListScreenBase {
   String get title => "Concerns";
 
   void _navigateToAddTriage(BuildContext c) {
-    // Navigate to add triage screen
-    ScaffoldMessenger.of(c).showSnackBar(
-      SnackBar(content: Text('Add new triage - To be implemented')),
+    Navigator.push(
+      c,
+      MaterialPageRoute(builder: (context) => ConcernDetailScreen()),
     );
   }
 }
 
 class _ConcernListScreenState extends State<ConcernListScreen> {
   DateTime _selectedDate = DateTime.now();
-  List<Patient> _patients = [];
+  List<Concern> _patients = [];
   bool _isLoading = true;
 
   @override
@@ -48,7 +48,7 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
     
     setState(() {
       _patients = [
-        Patient(
+        Concern(
           id: '1',
           name: 'John Doe',
           phoneNumber: '+1 (555) 123-4567',
@@ -58,7 +58,7 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
           resolutionETA: DateTime.now().add(Duration(minutes: 30)),
           assignedTo: 'Dr. Smith',
         ),
-        Patient(
+        Concern(
           id: '2',
           name: 'Jane Smith',
           phoneNumber: '+1 (555) 987-6543',
@@ -68,7 +68,7 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
           resolutionETA: DateTime.now().add(Duration(hours: 2)),
           assignedTo: 'Dr. Johnson',
         ),
-        Patient(
+        Concern(
           id: '3',
           name: 'Robert Brown',
           phoneNumber: '+1 (555) 555-5555',
@@ -261,7 +261,7 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
     );
   }
 
-  Widget _buildTriageCard(Patient patient) {
+  Widget _buildTriageCard(Concern patient) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: InkWell(
@@ -269,7 +269,7 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => TriageDetailScreen(patient: patient),
+              builder: (context) => ConcernDetailScreen(concern: patient),
             ),
           );
         },

@@ -5,7 +5,7 @@ import '../utils/format_utils.dart';
 class AppointmentDetailScreen extends StatelessWidget {
   final Appointment appointment;
 
-  const AppointmentDetailScreen({super.key, required this.appointment});
+  const AppointmentDetailScreen({super.key, this.appointment = const Appointment()});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class AppointmentDetailScreen extends StatelessWidget {
             _buildInfoRow(
               icon: Icons.calendar_today,
               label: 'Age',
-              value: '${appointment.age} years',
+              value: appointment.age != null? '${appointment.age} years': '',
             ),
             _buildInfoRow(
               icon: Icons.wc,
@@ -129,7 +129,7 @@ class AppointmentDetailScreen extends StatelessWidget {
                 Icon(Icons.event, color: Colors.blue),
                 const SizedBox(width: 12),
                 Text(
-                  FormatUtils.formatDate(appointment.appointmentDateTime),
+                  appointment.appointmentDateTime == null ? '' : FormatUtils.formatDate(appointment.appointmentDateTime!),
                   style: TextStyle(fontSize: 16),
                 ),
               ],
@@ -140,7 +140,7 @@ class AppointmentDetailScreen extends StatelessWidget {
                 Icon(Icons.access_time, color: Colors.blue),
                 const SizedBox(width: 12),
                 Text(
-                  FormatUtils.formatTime(appointment.appointmentDateTime),
+                  appointment.appointmentDateTime == null ? '' : FormatUtils.formatTime(appointment.appointmentDateTime!),
                   style: TextStyle(fontSize: 16),
                 ),
               ],

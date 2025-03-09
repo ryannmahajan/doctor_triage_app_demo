@@ -1,4 +1,4 @@
-class Patient {
+class Concern {
   final String id;
   final String name;
   final String phoneNumber;
@@ -9,17 +9,18 @@ class Patient {
   final bool isResolved;
   final String assignedTo;
 
-  Patient({
-    required this.id,
-    required this.name,
-    required this.phoneNumber,
-    required this.isUrgent,
-    required this.complaintDetails,
-    required this.complaintTime,
+  const Concern({
+    this.id = "",
+    this.name = "",
+    this.phoneNumber = "",
+    this.isUrgent = false,
+    this.complaintDetails = "",
+    DateTime? complaintTime,
     this.resolutionETA,
     this.isResolved = false,
-    required this.assignedTo,
-  });
+    this.assignedTo = "",
+  }): complaintTime = complaintTime ?? DateTime.now();
+
 
   // Convert to/from JSON methods for Firebase
   Map<String, dynamic> toJson() => {
@@ -34,7 +35,7 @@ class Patient {
     'assignedTo': assignedTo,
   };
 
-  factory Patient.fromJson(Map<String, dynamic> json) => Patient(
+  factory Concern.fromJson(Map<String, dynamic> json) => Concern(
     id: json['id'],
     name: json['name'],
     phoneNumber: json['phoneNumber'],

@@ -20,12 +20,12 @@ class AppointmentListScreen extends ListScreenBase {
     );
   
   @override
-  String get title => "Concerns";
+  String get title => "Appointments";
 
   void _navigateToAddAppointment(BuildContext c) {
-    // Navigate to add triage screen
-    ScaffoldMessenger.of(c).showSnackBar(
-      SnackBar(content: Text('Add new appt. - To be implemented')),
+    Navigator.push(
+      c,
+      MaterialPageRoute(builder: (context) => AppointmentDetailScreen()),
     );
   }
 }
@@ -198,7 +198,7 @@ class _AppointmentListScreenState extends State<AppointmentListScreen> {
                     ),
                     Expanded(
                       child: Text(
-                        FormatUtils.formatTime(appointment.appointmentDateTime),
+                        FormatUtils.formatTime(appointment.appointmentDateTime!),
                         style: TextStyle(
                           fontSize: 18,
                         ),

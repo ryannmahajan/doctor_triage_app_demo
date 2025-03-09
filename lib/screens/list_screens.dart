@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:doctor_triage_app/screens/appointment_list_screen.dart';
-import 'package:doctor_triage_app/screens/triage_list_screen.dart';
+import 'package:doctor_triage_app/screens/concern_list_screen.dart';
 import 'package:flutter/material.dart';
 
 class MainListScreensWithBottomNavBar extends StatefulWidget {

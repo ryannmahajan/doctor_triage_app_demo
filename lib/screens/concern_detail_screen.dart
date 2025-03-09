@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
-import '../models/patient.dart';
-import '../utils/format_utils.dart'; // We'll create this later
+import '../models/concern.dart';
+import '../utils/format_utils.dart'; 
 
-class TriageDetailScreen extends StatefulWidget {
-  final Patient patient;
+class ConcernDetailScreen extends StatefulWidget {
+  final Concern concern;
 
-  const TriageDetailScreen({super.key, required this.patient});
+  ConcernDetailScreen({super.key, Concern? concern}) : concern = concern ?? Concern();
 
   @override
-  _TriageDetailScreenState createState() => _TriageDetailScreenState();
+  _ConcernDetailScreenState createState() => _ConcernDetailScreenState();
 }
 
-class _TriageDetailScreenState extends State<TriageDetailScreen> {
-  late Patient patient;
+class _ConcernDetailScreenState extends State<ConcernDetailScreen> {
+  late Concern concern;
   
   @override
   void initState() {
     super.initState();
-    patient = widget.patient;
+    concern = widget.concern;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Patient Triage Details'),
-        backgroundColor: patient.isUrgent ? Colors.red : Colors.blue,
+        title: Text('Patient Concern Details'),
+        backgroundColor: concern.isUrgent ? Colors.red : Colors.blue,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -57,14 +57,14 @@ class _TriageDetailScreenState extends State<TriageDetailScreen> {
               children: [
                 Expanded(
                   child: Text(
-                    patient.name,
+                    concern.name,
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                if (patient.isUrgent)
+                if (concern.isUrgent)
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
@@ -87,7 +87,7 @@ class _TriageDetailScreenState extends State<TriageDetailScreen> {
                 Icon(Icons.phone, size: 18, color: Colors.grey[600]),
                 SizedBox(width: 8),
                 Text(
-                  patient.phoneNumber,
+                  concern.phoneNumber,
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.grey[800],
@@ -118,7 +118,7 @@ class _TriageDetailScreenState extends State<TriageDetailScreen> {
             ),
             SizedBox(height: 12),
             Text(
-              patient.complaintDetails,
+              concern.complaintDetails,
               style: TextStyle(fontSize: 16),
             ),
           ],
@@ -148,19 +148,19 @@ class _TriageDetailScreenState extends State<TriageDetailScreen> {
                 Icon(Icons.access_time, size: 18, color: Colors.grey[600]),
                 SizedBox(width: 8),
                 Text(
-                  'Registered: ${FormatUtils.formatDateTime(patient.complaintTime)}',
+                  'Registered: ${FormatUtils.formatDateTime(concern.complaintTime)}',
                   style: TextStyle(fontSize: 16),
                 ),
               ],
             ),
             SizedBox(height: 8),
-            if (patient.resolutionETA != null)
+            if (concern.resolutionETA != null)
               Row(
                 children: [
                   Icon(Icons.timer, size: 18, color: Colors.grey[600]),
                   SizedBox(width: 8),
                   Text(
-                    'Expected Resolution: ${FormatUtils.formatDateTime(patient.resolutionETA!)}',
+                    'Expected Resolution: ${concern.resolutionETA!=null? FormatUtils.formatDateTime(concern.resolutionETA!): "Not Set"}',
                     style: TextStyle(fontSize: 16),
                   ),
                 ],
@@ -192,7 +192,7 @@ class _TriageDetailScreenState extends State<TriageDetailScreen> {
           style: ElevatedButton.styleFrom(
             minimumSize: Size(double.infinity, 50), backgroundColor: Colors.green,
           ),
-          onPressed: patient.isResolved ? null : () {
+          onPressed: concern.isResolved ? null : () {
             // Handle resolution logic
             _resolveComplaint();
           },
@@ -233,16 +233,16 @@ class _TriageDetailScreenState extends State<TriageDetailScreen> {
     // This would update the patient's isResolved status
     // and sync with Firebase
     setState(() {
-      patient = Patient(
-        id: patient.id,
-        name: patient.name,
-        phoneNumber: patient.phoneNumber,
-        isUrgent: patient.isUrgent,
-        complaintDetails: patient.complaintDetails,
-        complaintTime: patient.complaintTime,
-        resolutionETA: patient.resolutionETA,
+      concern = Concern(
+        id: concern.id,
+        name: concern.name,
+        phoneNumber: concern.phoneNumber,
+        isUrgent: concern.isUrgent,
+        complaintDetails: concern.complaintDetails,
+        complaintTime: concern.complaintTime,
+        resolutionETA: concern.resolutionETA,
         isResolved: true,
-        assignedTo: patient.assignedTo,
+        assignedTo: concern.assignedTo,
       );
     });
     

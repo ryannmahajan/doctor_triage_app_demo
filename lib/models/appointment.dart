@@ -1,24 +1,24 @@
 class Appointment {
   final String id;
   final String patientName;
-  final int age;
+  final int? age;
   final String gender;
   final String phoneNumber;
   final bool isAmbulatory;
   final bool needsWheelchair;
   final bool needsStretcher;
-  final DateTime appointmentDateTime;
+  final DateTime? appointmentDateTime;
 
-  Appointment({
-    required this.id,
-    required this.patientName,
-    required this.age,
-    required this.gender,
-    required this.phoneNumber,
-    required this.isAmbulatory,
-    required this.needsWheelchair,
-    required this.needsStretcher,
-    required this.appointmentDateTime,
+  const Appointment({
+    this.id = "",
+    this.patientName = "",
+    this.age,
+    this.gender = "",
+    this.phoneNumber = "",
+    this.isAmbulatory = false,
+    this.needsWheelchair = false,
+    this.needsStretcher = false,
+    this.appointmentDateTime,
   });
 
   // Convert to/from JSON methods for Firebase
@@ -31,7 +31,7 @@ class Appointment {
     'isAmbulatory': isAmbulatory,
     'needsWheelchair': needsWheelchair,
     'needsStretcher': needsStretcher,
-    'appointmentDateTime': appointmentDateTime.toIso8601String(),
+    'appointmentDateTime': appointmentDateTime!.toIso8601String(),
   };
 
   factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
