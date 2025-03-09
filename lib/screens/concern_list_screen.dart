@@ -1,12 +1,14 @@
-// lib/screens/triage_list_screen.dart
+import 'package:doctor_triage_app/models/Concern.dart';
 import 'package:doctor_triage_app/screens/list_screens.dart';
+import 'package:doctor_triage_app/services/repositories/concern_repository_interface.dart';
+import 'package:doctor_triage_app/services/repositories/remote_concern_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/concern.dart';
 import 'concern_detail_screen.dart';
 
 class ConcernListScreen extends ListScreenBase {
-  const ConcernListScreen({super.key});
+  final IConcernRepository concernRepository;
+  ConcernListScreen({super.key, IConcernRepository? concernRepository}):concernRepository = concernRepository ?? RemoteConcernRepository();
 
   @override
   _ConcernListScreenState createState() => _ConcernListScreenState();
@@ -32,54 +34,19 @@ class ConcernListScreen extends ListScreenBase {
 
 class _ConcernListScreenState extends State<ConcernListScreen> {
   DateTime _selectedDate = DateTime.now();
-  List<Concern> _patients = [];
+  List<Concern> _concerns = [];
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _loadPatients();
+    _loadConcerns();
   }
 
-  // Mock data loading function - replace with Firebase later
-  Future<void> _loadPatients() async {
-    // Simulate network delay
-    await Future.delayed(Duration(seconds: 1));
-    
+  Future<void> _loadConcerns() async {
+    final temp = await widget.concernRepository.getConcernsForDate(_selectedDate);
     setState(() {
-      _patients = [
-        Concern(
-          id: '1',
-          name: 'John Doe',
-          phoneNumber: '+1 (555) 123-4567',
-          isUrgent: true,
-          complaintDetails: 'Severe chest pain and shortness of breath',
-          complaintTime: DateTime.now().subtract(Duration(hours: 2)),
-          resolutionETA: DateTime.now().add(Duration(minutes: 30)),
-          assignedTo: 'Dr. Smith',
-        ),
-        Concern(
-          id: '2',
-          name: 'Jane Smith',
-          phoneNumber: '+1 (555) 987-6543',
-          isUrgent: false,
-          complaintDetails: 'Mild fever and sore throat',
-          complaintTime: DateTime.now().subtract(Duration(hours: 4)),
-          resolutionETA: DateTime.now().add(Duration(hours: 2)),
-          assignedTo: 'Dr. Johnson',
-        ),
-        Concern(
-          id: '3',
-          name: 'Robert Brown',
-          phoneNumber: '+1 (555) 555-5555',
-          isUrgent: true,
-          complaintDetails: 'High blood pressure and dizziness',
-          complaintTime: DateTime.now().subtract(Duration(hours: 1)),
-          resolutionETA: DateTime.now().add(Duration(minutes: 45)),
-          assignedTo: 'Dr. Williams',
-          isResolved: true,
-        ),
-      ];
+      _concerns = temp;
       _isLoading = false;
     });
   }
@@ -96,7 +63,7 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
         _selectedDate = picked;
         _isLoading = true;
       });
-      _loadPatients(); // Reload patients for the new date
+      _loadConcerns(); // Reload concerns for the new date
     }
   }
 
@@ -195,12 +162,12 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
           Expanded(
             child: _isLoading
                 ? Center(child: CircularProgressIndicator())
-                : _patients.isEmpty
+                : _concerns.isEmpty
                     ? Center(child: Text('No triage cases for this date'))
                     : ListView.builder(
-                        itemCount: _patients.length,
+                        itemCount: _concerns.length,
                         itemBuilder: (context, index) {
-                          return _buildTriageCard(_patients[index]);
+                          return _buildTriageCard(_concerns[index]);
                         },
                       ),
           ),
@@ -261,7 +228,7 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
     );
   }
 
-  Widget _buildTriageCard(Concern patient) {
+  Widget _buildTriageCard(Concern concern) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: InkWell(
@@ -269,7 +236,7 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ConcernDetailScreen(concern: patient),
+              builder: (context) => ConcernDetailScreen(concern: concern),
             ),
           );
         },
@@ -281,7 +248,7 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
               Container(
                 width: 4,
                 height: 70,
-                color: patient.isUrgent ? Colors.red : Colors.green,
+                color: concern.isUrgent ? Colors.red : Colors.green,
               ),
               SizedBox(width: 16),
               // Patient info
@@ -293,14 +260,14 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
                       children: [
                         Expanded(
                           child: Text(
-                            patient.name,
+                            concern.name,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        if (patient.isResolved)
+                        if (concern.isResolved)
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
@@ -320,7 +287,7 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      patient.complaintDetails,
+                      concern.complaintDetails,
                       style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -331,8 +298,8 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
                         Icon(Icons.timer, size: 16, color: Colors.grey[600]),
                         SizedBox(width: 4),
                         Text(
-                          patient.resolutionETA != null 
-                              ? 'ETA: ${DateFormat.jm().format(patient.resolutionETA!)}'
+                          concern.resolutionETA != null 
+                              ? 'ETA: ${DateFormat.jm().format(concern.resolutionETA!)}'
                               : 'No ETA',
                           style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                         ),
@@ -342,7 +309,7 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
                 ),
               ),
               // Urgency tag
-              if (patient.isUrgent && !patient.isResolved)
+              if (concern.isUrgent && !concern.isResolved)
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(

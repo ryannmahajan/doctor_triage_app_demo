@@ -1,6 +1,6 @@
+import 'package:doctor_triage_app/models/Concern.dart';
+import 'package:doctor_triage_app/utils/format_utils.dart';
 import 'package:flutter/material.dart';
-import '../models/concern.dart';
-import '../utils/format_utils.dart'; 
 
 class ConcernDetailScreen extends StatefulWidget {
   final Concern concern;

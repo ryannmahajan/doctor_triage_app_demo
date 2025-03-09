@@ -1,12 +1,15 @@
 import 'package:doctor_triage_app/models/appointment.dart';
 import 'package:doctor_triage_app/screens/appointment_detail_screen.dart';
 import 'package:doctor_triage_app/screens/list_screens.dart';
+import 'package:doctor_triage_app/services/repositories/appointment_repository_interface.dart';
+import 'package:doctor_triage_app/services/repositories/remote_appointment_repository.dart';
 import 'package:doctor_triage_app/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AppointmentListScreen extends ListScreenBase {
-  const AppointmentListScreen({super.key});
+  final IAppointmentRepository appointmentRepository;
+  AppointmentListScreen({super.key, IAppointmentRepository? appointmentRepository}):appointmentRepository = appointmentRepository ?? RemoteAppointmentRepository();
 
   @override
   _AppointmentListScreenState createState() => _AppointmentListScreenState();
@@ -41,49 +44,13 @@ class _AppointmentListScreenState extends State<AppointmentListScreen> {
     _loadAppointments();
   }
 
-  // Mock data loading function - replace with Firebase later
   Future<void> _loadAppointments() async {
-    // Simulate network delay
-    await Future.delayed(Duration(seconds: 1));
-    
+    final temp = await widget.appointmentRepository.getAppointmentsForDate(_selectedDate);
     setState(() {
-      _appointments = [
-        Appointment(
-          id: '1',
-          patientName: 'John Doe',
-          age: 45,
-          gender: 'Male',
-          phoneNumber: '+1 (555) 123-4567',
-          isAmbulatory: true,
-          needsWheelchair: false,
-          needsStretcher: false,
-          appointmentDateTime: DateTime.now().add(Duration(days: 2, hours: 3)),
-        ),
-        Appointment(
-          id: '2',
-          patientName: 'Jane Smith',
-          age: 45,
-          gender: 'Female',
-          phoneNumber: '+1 (555) 123-4567',
-          isAmbulatory: true,
-          needsWheelchair: false,
-          needsStretcher: false,
-          appointmentDateTime: DateTime.now().add(Duration(days: 2, hours: 3)),
-        ),
-        Appointment(
-          id: '3',
-          patientName: 'John Smith',
-          age: 39,
-          gender: 'Male',
-          phoneNumber: '+1 (555) 123-4567',
-          isAmbulatory: true,
-          needsWheelchair: false,
-          needsStretcher: false,
-          appointmentDateTime: DateTime.now().add(Duration(days: 2, hours: 3)),
-        ),
-      ];
+      _appointments = temp;
       _isLoading = false;
     });
+
   }
 
   Future<void> _selectDate(BuildContext context) async {

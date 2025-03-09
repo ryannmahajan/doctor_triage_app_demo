@@ -9,7 +9,7 @@ class Concern {
   final bool isResolved;
   final String assignedTo;
 
-  const Concern({
+  Concern({
     this.id = "",
     this.name = "",
     this.phoneNumber = "",
