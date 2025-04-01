@@ -132,40 +132,45 @@ class _ConcernDetailScreenState extends State<ConcernDetailScreen> {
       elevation: 4,
       child: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Timing Information',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 12),
-            Row(
-              children: [
-                Icon(Icons.access_time, size: 18, color: Colors.grey[600]),
-                SizedBox(width: 8),
-                Text(
-                  'Registered: ${FormatUtils.formatDateTime(concern.complaintTime)}',
-                  style: TextStyle(fontSize: 16),
+        child: Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Timing Information',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
-            ),
-            SizedBox(height: 8),
-            if (concern.resolutionETA != null)
+              ),
+              SizedBox(height: 12),
               Row(
                 children: [
-                  Icon(Icons.timer, size: 18, color: Colors.grey[600]),
+                  Icon(Icons.access_time, size: 18, color: Colors.grey[600]),
                   SizedBox(width: 8),
                   Text(
-                    'Expected Resolution: ${concern.resolutionETA!=null? FormatUtils.formatDateTime(concern.resolutionETA!): "Not Set"}',
+                    'Registered: ${FormatUtils.formatDateTime(concern.complaintTime)}',
                     style: TextStyle(fontSize: 16),
                   ),
                 ],
               ),
-          ],
+              SizedBox(height: 8),
+              if (concern.resolutionETA != null)
+                Row(
+                  children: [
+                    Icon(Icons.timer, size: 18, color: Colors.grey[600]),
+                    SizedBox(width: 8),
+                    
+                    Expanded(
+                      child: Text(
+                        'Expected Resolution: ${concern.resolutionETA!=null? FormatUtils.formatDateTime(concern.resolutionETA!): "Not Set"}',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
+                ),
+            ],
+          ),
         ),
       ),
     );
