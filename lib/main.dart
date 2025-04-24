@@ -1,4 +1,6 @@
+import 'package:doctor_triage_app/screens/home_page.dart';
 import 'package:doctor_triage_app/screens/list_screens.dart';
+import 'package:doctor_triage_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorSchemeSeed: Colors.blue,
         brightness: Brightness.light
       ),
-      home: MainListScreensWithBottomNavBar(),
+      home: LoginScreen(),
       // For testing, you can switch between these screens:
       // home: AppointmentDetailScreen(
       //   appointment: Appointment(

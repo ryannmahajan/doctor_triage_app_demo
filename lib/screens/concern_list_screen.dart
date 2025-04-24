@@ -156,7 +156,12 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      floatingActionButton: widget.floatingActionButton(context),
+      body: Column(
         children: [
           _buildDateFilter(),
           Expanded(
@@ -172,7 +177,8 @@ class _ConcernListScreenState extends State<ConcernListScreen> {
                       ),
           ),
         ],
-      );
+      ),
+    );
   }
 
   Widget _buildDateFilter() {

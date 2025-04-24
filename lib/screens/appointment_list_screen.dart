@@ -71,7 +71,12 @@ class _AppointmentListScreenState extends State<AppointmentListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      floatingActionButton: widget.floatingActionButton(context),
+      body: Column(
         children: [
           _buildDateFilter(),
           Expanded(
@@ -87,7 +92,8 @@ class _AppointmentListScreenState extends State<AppointmentListScreen> {
                       ),
           ),
         ],
-      );
+      ),
+    );
   }
 
   Widget _buildDateFilter() {
