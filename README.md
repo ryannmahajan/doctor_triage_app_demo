@@ -1,16 +1,12 @@
 # doctor_triage_app
 
-A new Flutter project.
+This is a demo app for doctors to manage appointments and concerns, with fake data. The resolution rate can be montiored by the second user (Dr. AP Singh)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+To install:
+- The Android APK is in the root: app-release.apk
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+To login:
+- For the first user, the password is 1111, the second user is 2222 and so on.
+- The second user (Dr. AP Singh) has the most features enabled
